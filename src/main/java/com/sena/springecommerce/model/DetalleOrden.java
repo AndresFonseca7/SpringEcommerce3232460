@@ -1,6 +1,9 @@
 package com.sena.springecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,10 +21,11 @@ public class DetalleOrden {
 	private Double precio;
 	private Double total;
 	
-	@ManyToOne
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Orden orden;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Producto producto;
 
 	public DetalleOrden() {

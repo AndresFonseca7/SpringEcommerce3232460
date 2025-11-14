@@ -16,6 +16,8 @@ public interface IOrdenService {
 	
 	public Optional<Orden> findById(Integer id);
 	
+	public void delete(Integer id);
+	
 	public String generarNumeroOrden(); 
 	
 	

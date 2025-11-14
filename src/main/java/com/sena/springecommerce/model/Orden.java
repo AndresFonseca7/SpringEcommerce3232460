@@ -3,12 +3,17 @@ package com.sena.springecommerce.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,16 +26,31 @@ public class Orden {
 	private Date fechacreacion;
 	private Double total;
 	
-	@ManyToOne
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "orden")
-	private List<DetalleOrden>ordenes;
-
+	
+	@JsonManagedReference
+	@OneToMany(
+			mappedBy = "orden", 
+		    fetch = FetchType.EAGER,
+		    cascade = CascadeType.ALL, 
+		    orphanRemoval = true
+			)
+	private List<DetalleOrden> ordenes;
 	public Orden() {
 		
 	}
 
+	
+	@PrePersist
+	protected void onCreate() {
+		this.fechacreacion = new Date();
+	
+	}
+		
+	
 	public Integer getId() {
 		return id;
 	}
